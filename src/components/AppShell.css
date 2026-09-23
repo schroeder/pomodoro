@@ -1,0 +1,36 @@
+/*
+ * Layout-Rahmen der App (Task 8, Req 14.2/14.3).
+ *
+ * - Desktop (>= 768px): Navigation oben, Inhalt zentriert im Fenster.
+ * - Mobile (< 768px): Inhalt füllt den Großteil des Bereichs; die fixierte Bottom-Nav
+ *   wird über zusätzliches unteres Padding freigehalten.
+ */
+
+.app-shell {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.app-shell__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-4);
+}
+
+/* Mobile: Platz für die fixierte Bottom Navigation schaffen (Req 14.3). */
+@media (max-width: 767px) {
+  .app-shell__main {
+    /* Höhe der Bottom-Nav (~64px) plus sicherer Bereich. */
+    padding-bottom: calc(72px + env(safe-area-inset-bottom, 0));
+    justify-content: flex-start;
+  }
+}

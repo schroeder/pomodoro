@@ -1,0 +1,84 @@
+/*
+ * Stile der Hauptnavigation (Task 8, Req 14.2–14.4, 18).
+ *
+ * - Desktop (>= 768px): Navigation oben (horizontal), an den Container-Anfang gesetzt.
+ * - Mobile (< 768px): Bottom Navigation, fixiert am unteren Rand, gleichmäßig verteilt.
+ * - Große Touch-Ziele (mind. --touch-target-min = 44px) auf allen Größen (Req 14.4).
+ * - Farben/Abstände ausschließlich aus den Design Tokens (tokens.css).
+ * - Sichtbare Fokuszustände kommen global über :focus-visible (global.css, Req 18.1).
+ */
+
+.app-nav {
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.app-nav__list {
+  list-style: none;
+  margin: 0;
+  padding: var(--space-2) var(--space-4);
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.app-nav__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--touch-target-min);
+  min-width: var(--touch-target-min);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.app-nav__link:hover {
+  background-color: var(--color-surface-elevated);
+  color: var(--color-text);
+}
+
+/* Aktiver Zustand (react-router NavLink setzt .is-active). */
+.app-nav__link.is-active {
+  color: var(--color-focus);
+  background-color: var(--color-focus-soft);
+}
+
+.app-nav__icon {
+  font-size: var(--font-size-lg);
+  line-height: 1;
+}
+
+/* Mobile: Bottom Navigation (Req 14.3). */
+@media (max-width: 767px) {
+  .app-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    border-top: 1px solid var(--color-border);
+    border-bottom: none;
+    box-shadow: var(--shadow-md);
+    /* Sicherer Bereich für Geräte mit Home-Indikator. */
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+
+  .app-nav__list {
+    padding: var(--space-1) var(--space-2);
+    justify-content: space-around;
+  }
+
+  .app-nav__link {
+    flex: 1 1 0;
+    flex-direction: column;
+    gap: var(--space-1);
+    justify-content: center;
+    padding: var(--space-2);
+    text-align: center;
+    font-size: var(--font-size-sm);
+  }
+}

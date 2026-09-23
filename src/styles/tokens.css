@@ -1,0 +1,114 @@
+/*
+ * Design Tokens der Pomodoro-App.
+ * Farben, Abstände, Typografie und Radien als CSS Custom Properties.
+ * Light Mode als Standard in :root; Dark Mode über [data-theme="dark"].
+ * (Requirements 13.1, 13.3)
+ */
+
+:root {
+  /* Flächen und Text (Light) – ruhig, professionell, ausreichender Kontrast */
+  --color-bg: #faf9f7;
+  --color-surface: #ffffff;
+  --color-surface-elevated: #f2f0ec;
+  --color-border: #e2ddd5;
+  --color-text: #1f1d1a;
+  --color-text-muted: #5f5a52;
+  --color-text-inverted: #ffffff;
+
+  /* Akzent Fokus – dezente warme Farbe (Req 13.3).
+   * #af4b28 statt #c0552e: erreicht auf --color-bg auch für normalen Text WCAG-AA
+   * (~5.2:1 statt ~4.4:1) und verbessert zugleich Weiß-auf-Akzent (~5.4:1). */
+  --color-focus: #af4b28;
+  /* #f9e8e0 (etwas heller als zuvor): hält --color-focus als Text darauf über AA
+   * (~4.6:1), z. B. für den aktiven Navigationslink. */
+  --color-focus-soft: #f9e8e0;
+  --color-focus-contrast: #ffffff;
+
+  /* Akzent Pause – ruhige Grün-/Blautöne (Req 13.3) */
+  --color-short-break: #2e7d6b;
+  --color-short-break-soft: #cfe8e1;
+  --color-long-break: #2f6690;
+  --color-long-break-soft: #d3e2ee;
+  --color-break-contrast: #ffffff;
+
+  /* Statusfarben */
+  --color-success: #2e7d32;
+  --color-danger: #b3261e;
+
+  /* Fortschrittsring (neutrale Bahn) */
+  --color-track: #e2ddd5;
+
+  /* Fokus-Ring für Tastaturbedienung (Req 16.3 / 18.1) */
+  --focus-ring: 0 0 0 3px rgba(47, 102, 144, 0.55);
+
+  /* Typografie */
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', 'Roboto Mono', monospace;
+  --font-size-base: 16px;
+  --font-size-sm: 0.875rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 2rem;
+  --font-size-timer: clamp(3.5rem, 18vw, 7rem);
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  --line-height-base: 1.5;
+
+  /* Abstände */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-8: 3rem;
+
+  /* Radien */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  /* Schatten (dezent) */
+  --shadow-sm: 0 1px 2px rgba(31, 29, 26, 0.06);
+  --shadow-md: 0 4px 16px rgba(31, 29, 26, 0.1);
+
+  /* Touch-Ziele (Req 14.4 / 18) */
+  --touch-target-min: 44px;
+
+  /* Übergänge (zurückhaltend, Req 13.4) */
+  --transition-fast: 120ms ease;
+  --transition-base: 200ms ease;
+}
+
+[data-theme='dark'] {
+  --color-bg: #17161a;
+  --color-surface: #201f24;
+  --color-surface-elevated: #2a292f;
+  --color-border: #38363d;
+  --color-text: #f2f0ee;
+  --color-text-muted: #a6a2ab;
+  --color-text-inverted: #17161a;
+
+  --color-focus: #e2794f;
+  /* Etwas dunkler als zuvor, damit --color-focus als Text darauf über AA bleibt
+   * (~5.0:1), z. B. für den aktiven Navigationslink im Dark Mode. */
+  --color-focus-soft: #3a2116;
+  --color-focus-contrast: #17161a;
+
+  --color-short-break: #4bb59d;
+  --color-short-break-soft: #1e3b35;
+  --color-long-break: #5a9bc9;
+  --color-long-break-soft: #1e3245;
+  --color-break-contrast: #17161a;
+
+  --color-success: #5cbb60;
+  --color-danger: #ef5350;
+
+  --color-track: #38363d;
+
+  --focus-ring: 0 0 0 3px rgba(90, 155, 201, 0.6);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+}

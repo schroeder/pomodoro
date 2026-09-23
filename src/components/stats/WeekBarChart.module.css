@@ -1,0 +1,24 @@
+/* WeekBarChart – eigenes SVG-Balkendiagramm der Fokuszeit pro Tag (Req 11.3). */
+
+.wrapper {
+  width: 100%;
+}
+
+.chart {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 180px;
+  overflow: visible;
+}
+
+.bar {
+  fill: var(--color-focus);
+  transition: height var(--transition-base);
+}
+
+.dayLabel {
+  fill: var(--color-text-muted);
+  font-family: var(--font-sans);
+  font-size: 9px;
+}

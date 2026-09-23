@@ -1,0 +1,79 @@
+/* FocusMode – ablenkungsfreie Vollbild-Overlay-Ansicht (Req 10.1/10.2). */
+
+/*
+ * Deckt die gesamte Ansicht ab und blendet damit die übrige UI visuell aus. Die
+ * eigentliche Ausblendung von Navigation/Statistik/Einstellungen erfolgt in der
+ * TimerView, die die restliche Oberfläche bei aktivem Fokusmodus nicht rendert
+ * (Req 10.2). Diese Ebene sorgt für visuelle Ruhe (dezente Fläche, viel Weißraum).
+ */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg);
+  padding: var(--space-6) var(--space-4);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-6);
+  text-align: center;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+/* Prominente Pause/Start-Aktion. */
+.primary {
+  min-height: var(--touch-target-min);
+  min-width: var(--touch-target-min);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-focus);
+  background: var(--color-focus);
+  color: var(--color-focus-contrast);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: filter var(--transition-fast);
+}
+
+.primary:hover {
+  filter: brightness(0.95);
+}
+
+/* Zurückhaltende Sekundäraktionen (Stoppen, Vollbild verlassen). */
+.secondary {
+  min-height: var(--touch-target-min);
+  min-width: var(--touch-target-min);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.secondary:hover {
+  background: var(--color-surface-elevated);
+}
+
+.primary:focus-visible,
+.secondary:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}

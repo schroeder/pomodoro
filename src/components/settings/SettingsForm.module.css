@@ -1,0 +1,132 @@
+/* SettingsForm – Layout des Einstellungs-Formulars (Task 13, Req 12/13/19).
+ * Ruhig, minimalistisch; nutzt die Design Tokens. */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.storageHint {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-focus-soft);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin: 0;
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.legend {
+  padding: 0 var(--space-2);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.label {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+}
+
+.hint {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.numberInput,
+.select {
+  min-height: var(--touch-target-min);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-elevated);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+}
+
+.numberInput {
+  max-width: 8rem;
+}
+
+.slider {
+  width: 100%;
+  max-width: 16rem;
+  accent-color: var(--color-focus);
+}
+
+.toggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: var(--touch-target-min);
+}
+
+.toggleLabel {
+  color: var(--color-text);
+}
+
+.toggle {
+  width: 1.4rem;
+  height: 1.4rem;
+  accent-color: var(--color-focus);
+}
+
+.previewButton {
+  align-self: flex-start;
+  min-height: var(--touch-target-min);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: var(--color-surface-elevated);
+  color: var(--color-text);
+  font-size: var(--font-size-base);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.previewButton:hover:not(:disabled) {
+  background: var(--color-focus-soft);
+}
+
+.previewButton:disabled,
+.select:disabled,
+.slider:disabled,
+.toggle:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.privacyNote {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+/* Sichtbare Fokuszustände für Tastaturbedienung (Req 16.3 / 18.1). */
+.numberInput:focus-visible,
+.select:focus-visible,
+.slider:focus-visible,
+.toggle:focus-visible,
+.previewButton:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}

@@ -1,0 +1,400 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1. Projekt-Setup und Grundgerüst": [
+      {
+        "executionId": "684b2930-b531-4733-b362-3cb068fdda90",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790160000555
+      },
+      {
+        "executionId": "684b2930-b531-4733-b362-3cb068fdda90",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790160006736
+      },
+      {
+        "executionId": "684b2930-b531-4733-b362-3cb068fdda90",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790160441776
+      }
+    ],
+    "2.1 Reducer und Übergänge implementieren": [
+      {
+        "executionId": "684b2930-b531-4733-b362-3cb068fdda90",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790160000582
+      },
+      {
+        "executionId": "684b2930-b531-4733-b362-3cb068fdda90",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790160453453
+      },
+      {
+        "executionId": "70becb70-ebd1-43f9-9c0c-38a191227f9e",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790167810419
+      }
+    ],
+    "2.2 Zyklus-Logik implementieren": [
+      {
+        "executionId": "684b2930-b531-4733-b362-3cb068fdda90",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790160000606
+      },
+      {
+        "executionId": "70becb70-ebd1-43f9-9c0c-38a191227f9e",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790169753018
+      },
+      {
+        "executionId": "70becb70-ebd1-43f9-9c0c-38a191227f9e",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790169904133
+      }
+    ],
+    "3. Einstellungen (Settings)": [
+      {
+        "executionId": "684b2930-b531-4733-b362-3cb068fdda90",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790160000633
+      },
+      {
+        "executionId": "70becb70-ebd1-43f9-9c0c-38a191227f9e",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790169911269
+      },
+      {
+        "executionId": "70becb70-ebd1-43f9-9c0c-38a191227f9e",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790170060778
+      }
+    ],
+    "4. Persistenz und Wiederherstellung": [
+      {
+        "executionId": "684b2930-b531-4733-b362-3cb068fdda90",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790160000653
+      },
+      {
+        "executionId": "70becb70-ebd1-43f9-9c0c-38a191227f9e",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790170063762
+      },
+      {
+        "executionId": "70becb70-ebd1-43f9-9c0c-38a191227f9e",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790170539888
+      }
+    ],
+    "5. TimerProvider mit Ticker und Effekten": [
+      {
+        "executionId": "684b2930-b531-4733-b362-3cb068fdda90",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790160000668
+      },
+      {
+        "executionId": "70becb70-ebd1-43f9-9c0c-38a191227f9e",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790170543628
+      },
+      {
+        "executionId": "96286dc1-0a7f-435b-9af3-5cc7419e6446",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790177982852
+      },
+      {
+        "executionId": "96286dc1-0a7f-435b-9af3-5cc7419e6446",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790178343568
+      }
+    ],
+    "6.1 IndexedDB-Zugriff": [
+      {
+        "executionId": "684b2930-b531-4733-b362-3cb068fdda90",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790160000687
+      },
+      {
+        "executionId": "96286dc1-0a7f-435b-9af3-5cc7419e6446",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790178350626
+      },
+      {
+        "executionId": "96286dc1-0a7f-435b-9af3-5cc7419e6446",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790178529654
+      }
+    ],
+    "6.2 Aggregationen": [
+      {
+        "executionId": "684b2930-b531-4733-b362-3cb068fdda90",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790160000703
+      },
+      {
+        "executionId": "96286dc1-0a7f-435b-9af3-5cc7419e6446",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790178532961
+      },
+      {
+        "executionId": "96286dc1-0a7f-435b-9af3-5cc7419e6446",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790178785982
+      }
+    ],
+    "7.1 SoundService": [
+      {
+        "executionId": "684b2930-b531-4733-b362-3cb068fdda90",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790160000723
+      },
+      {
+        "executionId": "96286dc1-0a7f-435b-9af3-5cc7419e6446",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790178793635
+      },
+      {
+        "executionId": "96286dc1-0a7f-435b-9af3-5cc7419e6446",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790178926295
+      }
+    ],
+    "7.2 NotificationService": [
+      {
+        "executionId": "684b2930-b531-4733-b362-3cb068fdda90",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790160000740
+      },
+      {
+        "executionId": "96286dc1-0a7f-435b-9af3-5cc7419e6446",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790178929220
+      },
+      {
+        "executionId": "96286dc1-0a7f-435b-9af3-5cc7419e6446",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790179080467
+      }
+    ],
+    "7.3 DocumentTitleService": [
+      {
+        "executionId": "684b2930-b531-4733-b362-3cb068fdda90",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790160000759
+      },
+      {
+        "executionId": "96286dc1-0a7f-435b-9af3-5cc7419e6446",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790179083672
+      },
+      {
+        "executionId": "f8513927-58fb-4997-bb09-c90fdbd2c7b6",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790179670086
+      },
+      {
+        "executionId": "f8513927-58fb-4997-bb09-c90fdbd2c7b6",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790179826446
+      }
+    ],
+    "8. App-Shell, Navigation, Routing": [
+      {
+        "executionId": "684b2930-b531-4733-b362-3cb068fdda90",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790160000787
+      },
+      {
+        "executionId": "f8513927-58fb-4997-bb09-c90fdbd2c7b6",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790179830430
+      },
+      {
+        "executionId": "f8513927-58fb-4997-bb09-c90fdbd2c7b6",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790180105630
+      }
+    ],
+    "9.1 Anzeige-Komponenten": [
+      {
+        "executionId": "684b2930-b531-4733-b362-3cb068fdda90",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790160000803
+      },
+      {
+        "executionId": "f8513927-58fb-4997-bb09-c90fdbd2c7b6",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790180112138
+      },
+      {
+        "executionId": "f8513927-58fb-4997-bb09-c90fdbd2c7b6",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790180437840
+      }
+    ],
+    "9.2 Steuerungs-Komponenten": [
+      {
+        "executionId": "684b2930-b531-4733-b362-3cb068fdda90",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790160000821
+      },
+      {
+        "executionId": "f8513927-58fb-4997-bb09-c90fdbd2c7b6",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790180441093
+      },
+      {
+        "executionId": "f8513927-58fb-4997-bb09-c90fdbd2c7b6",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790180798415
+      }
+    ],
+    "10. Fokusmodus": [
+      {
+        "executionId": "684b2930-b531-4733-b362-3cb068fdda90",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790160000836
+      },
+      {
+        "executionId": "f8513927-58fb-4997-bb09-c90fdbd2c7b6",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790180802670
+      },
+      {
+        "executionId": "f8513927-58fb-4997-bb09-c90fdbd2c7b6",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790181025321
+      }
+    ],
+    "11. Tastatursteuerung": [
+      {
+        "executionId": "684b2930-b531-4733-b362-3cb068fdda90",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790160000854
+      },
+      {
+        "executionId": "f8513927-58fb-4997-bb09-c90fdbd2c7b6",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790181028431
+      },
+      {
+        "executionId": "f8513927-58fb-4997-bb09-c90fdbd2c7b6",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790181228179
+      }
+    ],
+    "12. Statistik-Ansicht (StatsView)": [
+      {
+        "executionId": "684b2930-b531-4733-b362-3cb068fdda90",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790160000870
+      },
+      {
+        "executionId": "f8513927-58fb-4997-bb09-c90fdbd2c7b6",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790181231528
+      },
+      {
+        "executionId": "f8513927-58fb-4997-bb09-c90fdbd2c7b6",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790181597504
+      }
+    ],
+    "13. Einstellungs-Ansicht (SettingsView)": [
+      {
+        "executionId": "684b2930-b531-4733-b362-3cb068fdda90",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790160000887
+      },
+      {
+        "executionId": "f8513927-58fb-4997-bb09-c90fdbd2c7b6",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790181600790
+      },
+      {
+        "executionId": "f8513927-58fb-4997-bb09-c90fdbd2c7b6",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790181884470
+      }
+    ],
+    "14. PWA und Offline": [
+      {
+        "executionId": "684b2930-b531-4733-b362-3cb068fdda90",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790160000903
+      },
+      {
+        "executionId": "f8513927-58fb-4997-bb09-c90fdbd2c7b6",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790181887714
+      },
+      {
+        "executionId": "f8513927-58fb-4997-bb09-c90fdbd2c7b6",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790184117002
+      }
+    ],
+    "15. Accessibility- und Design-Feinschliff": [
+      {
+        "executionId": "684b2930-b531-4733-b362-3cb068fdda90",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790160000920
+      },
+      {
+        "executionId": "f8513927-58fb-4997-bb09-c90fdbd2c7b6",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790184121259
+      },
+      {
+        "executionId": "2c187d77-de57-4cf9-be01-9fae3be51573",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790192629359
+      }
+    ],
+    "16. Integration, Fehlerfälle und Verifikation": [
+      {
+        "executionId": "684b2930-b531-4733-b362-3cb068fdda90",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790160000936
+      },
+      {
+        "executionId": "2c187d77-de57-4cf9-be01-9fae3be51573",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790192632805
+      },
+      {
+        "executionId": "2c187d77-de57-4cf9-be01-9fae3be51573",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790192990919
+      }
+    ],
+    "2. Timer-Zustandsmaschine (reine Logik)": [
+      {
+        "executionId": "70becb70-ebd1-43f9-9c0c-38a191227f9e",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790169904153
+      }
+    ],
+    "6. Statistik-Speicher und Aggregation": [
+      {
+        "executionId": "96286dc1-0a7f-435b-9af3-5cc7419e6446",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790178786002
+      }
+    ],
+    "7. Services: Ton, Benachrichtigungen, Tab-Titel": [
+      {
+        "executionId": "f8513927-58fb-4997-bb09-c90fdbd2c7b6",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790179826468
+      }
+    ],
+    "9. Hauptansicht (TimerView) und Steuerung": [
+      {
+        "executionId": "f8513927-58fb-4997-bb09-c90fdbd2c7b6",
+        "chatSessionId": "sess_4a687151-a78e-4c21-87d4-c123195000dc",
+        "timestamp": 1790180798443
+      }
+    ]
+  }
+}

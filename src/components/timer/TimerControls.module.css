@@ -1,0 +1,53 @@
+/* TimerControls – kontextabhängige Steuerung (Req 1, 4, 5.4, 14.4). */
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+/* Prominente Hauptaktion (Start/Pause/Fortsetzen/nächste Phase). */
+.primary {
+  min-height: var(--touch-target-min);
+  min-width: var(--touch-target-min);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-focus);
+  background: var(--color-focus);
+  color: var(--color-focus-contrast);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: filter var(--transition-fast);
+}
+
+.primary:hover {
+  filter: brightness(0.95);
+}
+
+/* Sekundäre Aktionen (Neustart, Abbrechen, Überspringen, Früher abschließen). */
+.secondary {
+  min-height: var(--touch-target-min);
+  min-width: var(--touch-target-min);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.secondary:hover {
+  background: var(--color-surface-elevated);
+}
+
+.primary:focus-visible,
+.secondary:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
