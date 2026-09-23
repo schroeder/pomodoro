@@ -11,7 +11,21 @@ import { VitePWA } from 'vite-plugin-pwa';
 // - Da die App keine Serverdaten benötigt (Timer via localStorage, Statistik via
 //   IndexedDB), genügt das Precaching aller Build-Assets für die Offline-Nutzung
 //   (Req 17.2, 17.3).
+//
+// Deployment-Basis-Pfad:
+// - Standardmäßig wird die App in einem Unterordner ausgeliefert (z. B. Uberspace
+//   unter https://<user>.uber.space/pomodoro/). Der Basis-Pfad ist über die
+//   Umgebungsvariable BASE_PATH überschreibbar; für Root-Deployments `BASE_PATH=/`
+//   setzen. Alle PWA-Pfade (start_url, scope, navigateFallback) werden daraus
+//   abgeleitet, damit Assets, Manifest und Service Worker im Unterordner korrekt
+//   auflösen.
+const BASE_PATH = process.env.BASE_PATH ?? '/pomodoro/';
+// Sicherstellen, dass der Basis-Pfad mit Slash beginnt und endet.
+const normalizedBase = `/${BASE_PATH.replace(/^\/+|\/+$/g, '')}/`.replace('//', '/');
+const base = normalizedBase === '//' ? '/' : normalizedBase;
+
 export default defineConfig({
+  base,
   plugins: [
     react(),
     VitePWA({
@@ -26,8 +40,9 @@ export default defineConfig({
           'Minimalistischer Pomodoro-Timer als installierbare PWA. Alle Daten bleiben lokal auf deinem Gerät.',
         lang: 'de',
         display: 'standalone',
-        start_url: '/',
-        scope: '/',
+        // start_url/scope am Basis-Pfad ausrichten (Unterordner-fähig).
+        start_url: base,
+        scope: base,
         // Farben abgeleitet aus tokens.css (Light Mode) und index.html theme-color.
         theme_color: '#faf9f7',
         background_color: '#faf9f7',
@@ -56,8 +71,8 @@ export default defineConfig({
         // Alle relevanten Build-Assets vorab cachen -> App startet und läuft
         // vollständig offline (Req 17.2, 17.3).
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
-        // SPA: Navigationsanfragen offline auf index.html zurückführen.
-        navigateFallback: '/index.html',
+        // SPA: Navigationsanfragen offline auf die index.html im Basis-Pfad zurückführen.
+        navigateFallback: `${base}index.html`,
         cleanupOutdatedCaches: true,
       },
       devOptions: {
