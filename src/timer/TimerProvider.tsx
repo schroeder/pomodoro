@@ -36,7 +36,7 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import type { Session, TimerState } from '../types';
+import type { PhaseType, Session, TimerState } from '../types';
 import { useSettings } from '../settings/SettingsProvider';
 import { timerReducer, durationForPhase, type TimerAction } from './timerReducer';
 import {
@@ -60,6 +60,32 @@ export interface TimerProviderProps {
    * hier ein. Standard: kein Callback (Timer funktioniert eigenständig).
    */
   onSessionComplete?: (session: Session) => void;
+  /**
+   * SEAM für Ton/Benachrichtigung (Req 8/9): Wird GENAU EINMAL pro Phaseninstanz
+   * aufgerufen, wenn eine Phase tatsächlich endet – d. h. über EXPIRE (regulärer
+   * Ablauf) oder COMPLETE_EARLY (Fokus früher abgeschlossen) in `Completed`
+   * übergeht. Feuert für ALLE Phasenarten (Focus, ShortBreak, LongBreak), nicht nur
+   * Fokus, und BEVOR das Auto-Advance in die nächste (Ready-)Phase wechselt.
+   *
+   * Bewusst KEIN direkter Service-Import hier: der SoundService/NotificationService
+   * wird in App.tsx (TimerLayer) verdrahtet – analog zu {@link onSessionComplete}.
+   * Standard: kein Callback.
+   */
+  onPhaseEnd?: (phaseType: PhaseType) => void;
+  /**
+   * SEAM für die erste Nutzergeste (Req 8.1/8.2, 9.3): Wird GENAU EINMAL pro
+   * Provider-Lebensdauer aufgerufen, sobald der Timer durch die Nutzeraktion
+   * `start()` das erste Mal von einem Nicht-Running-Zustand in `Running` wechselt.
+   *
+   * Semantik (bewusst einfach/deterministisch):
+   * - Feuert nur beim ersten erfolgreichen `start()` (Ready → Running).
+   * - Feuert NICHT bei `resume()` (Paused → Running) und NICHT bei Auto-Start.
+   * - Feuert danach nie wieder, auch nicht bei späteren `start()`-Aufrufen.
+   *
+   * Verwendung: AudioContext entsperren (Autoplay-Policy) und – je nach Regel –
+   * Benachrichtigungsberechtigung anfragen. Standard: kein Callback.
+   */
+  onFirstStart?: () => void;
   /** Injizierbare Zeitquelle (Tests). Standard: `Date.now`. */
   now?: () => number;
   /** Injizierbarer ID-Generator für Sessions (Tests). Standard: `crypto.randomUUID`/Fallback. */
@@ -158,6 +184,8 @@ function createInitialState(settings: Settings, loaded: LoadResult): TimerState 
 export function TimerProvider({
   children,
   onSessionComplete,
+  onPhaseEnd,
+  onFirstStart,
   now: nowFn = Date.now,
   generateId = defaultGenerateId,
   tickIntervalMs = TICK_INTERVAL_MS,
@@ -185,6 +213,17 @@ export function TimerProvider({
   const onSessionCompleteRef = useRef(onSessionComplete);
   onSessionCompleteRef.current = onSessionComplete;
 
+  // Ton-/Benachrichtigungs-Seam als Ref (stabile Effektabhängigkeiten).
+  const onPhaseEndRef = useRef(onPhaseEnd);
+  onPhaseEndRef.current = onPhaseEnd;
+
+  // Erste-Start-Seam als Ref.
+  const onFirstStartRef = useRef(onFirstStart);
+  onFirstStartRef.current = onFirstStart;
+
+  // Merkt, ob onFirstStart bereits gefeuert wurde (einmal pro Provider-Lebensdauer).
+  const firstStartFiredRef = useRef(false);
+
   // Zustand als Ref für Listener, die zum Bindungszeitpunkt eingefroren wären.
   const stateRef = useRef(state);
   stateRef.current = state;
@@ -192,6 +231,12 @@ export function TimerProvider({
   // Merkt sich den zuletzt für eine Session erfassten Fokus, um Doppel-Erfassung zu
   // vermeiden (z. B. TICK-EXPIRE gefolgt von erneutem TICK). Schlüssel ist `startedAt`.
   const recordedFocusStartRef = useRef<number | null>(null);
+
+  // Merkt sich die zuletzt für onPhaseEnd gemeldete Phaseninstanz, um doppelte
+  // Meldungen zu vermeiden. Schlüssel ist `startedAt` – jede gestartete Phase erhält
+  // beim START ein frisches `startedAt`, sodass aufeinanderfolgende Phasen unterscheidbar
+  // sind. Gilt für ALLE Phasenarten (Focus, ShortBreak, LongBreak).
+  const notifiedPhaseStartRef = useRef<number | null>(null);
 
   // Render-Nonce: Ein TICK, der `now >= endsAt` NICHT überschreitet, lässt den
   // Reducer-Zustand strukturell unverändert (gleiche Objektreferenz) – React würde dann
@@ -237,6 +282,26 @@ export function TimerProvider({
     // Ein neuer Fokus erhält ohnehin ein neues `startedAt`, daher ist kein explizites
     // Zurücksetzen von `recordedFocusStartRef` nötig, um Doppel-Erfassung zu vermeiden.
   }, [state, nowFn, generateId]);
+
+  // --- Phasenende-Seam für Ton/Benachrichtigung (Req 8/9) ---
+  // Feuert genau einmal, sobald eine Phase in `Completed` übergeht (via EXPIRE oder
+  // COMPLETE_EARLY). Gilt für ALLE Phasenarten. Muss VOR dem Auto-Advance-Effekt
+  // deklariert sein, damit die Meldung nicht durch den sofortigen Wechsel in die
+  // nächste Ready-Phase verloren geht (React führt Effekte in Deklarationsreihenfolge
+  // aus; dieser Effekt beobachtet denselben `Completed`-Zustand wie das Auto-Advance).
+  // Idempotenz über `startedAt` verhindert Doppel-Meldungen bei erneuten Ticks.
+  useEffect(() => {
+    if (
+      state.status === 'Completed' &&
+      state.startedAt !== null &&
+      notifiedPhaseStartRef.current !== state.startedAt
+    ) {
+      notifiedPhaseStartRef.current = state.startedAt;
+      onPhaseEndRef.current?.(state.phaseType);
+    }
+    // Neue Phasen erhalten beim START ein frisches `startedAt`; ein explizites
+    // Zurücksetzen ist daher nicht nötig.
+  }, [state]);
 
   // --- Auto-Start nach EXPIRE (Req 5.3/5.5/5.6) ---
   // Nach dem Übergang in Completed wird die nächste Phase über ADVANCE (→ Ready)
@@ -299,6 +364,14 @@ export function TimerProvider({
 
   // --- Aktions-Dispatcher ---
   const start = useCallback(() => {
+    // onFirstStart: genau einmal pro Provider-Lebensdauer, nur beim ersten echten
+    // Ready → Running via Nutzeraktion. Der Reducer wechselt START nur aus `Ready`;
+    // wir feuern daher nur, wenn der aktuelle Zustand tatsächlich `Ready` ist – so
+    // löst ein no-op-`start()` (z. B. während Running/Paused) den Seam nicht aus.
+    if (!firstStartFiredRef.current && stateRef.current.status === 'Ready') {
+      firstStartFiredRef.current = true;
+      onFirstStartRef.current?.();
+    }
     dispatch({ type: 'START', now: nowFn() });
   }, [nowFn]);
   const pause = useCallback(() => {

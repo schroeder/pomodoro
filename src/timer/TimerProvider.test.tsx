@@ -3,7 +3,7 @@ import { act, render, renderHook } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { TimerProvider, useTimer } from './TimerProvider';
 import { SettingsProvider } from '../settings/SettingsProvider';
-import type { Session, Settings } from '../types';
+import type { PhaseType, Session, Settings } from '../types';
 import { TIMER_STORAGE_KEY } from './persistence';
 import { SETTINGS_STORAGE_KEY, DEFAULT_SETTINGS } from '../settings/defaults';
 
@@ -60,6 +60,8 @@ function seedSettings(patch: Partial<Settings>): void {
 
 interface WrapperOpts {
   onSessionComplete?: (s: Session) => void;
+  onPhaseEnd?: (phaseType: PhaseType) => void;
+  onFirstStart?: () => void;
   now: () => number;
   generateId?: () => string;
   tickIntervalMs?: number;
@@ -72,6 +74,8 @@ function makeWrapper(opts: WrapperOpts) {
         <TimerProvider
           now={opts.now}
           onSessionComplete={opts.onSessionComplete}
+          onPhaseEnd={opts.onPhaseEnd}
+          onFirstStart={opts.onFirstStart}
           generateId={opts.generateId}
           tickIntervalMs={opts.tickIntervalMs}
         >
@@ -363,6 +367,213 @@ describe('TimerProvider / useTimer', () => {
     });
     expect(result.current.state.status).toBe('Cancelled');
     expect(sessions).toHaveLength(0);
+  });
+
+  // --- onPhaseEnd-Seam (Ton/Benachrichtigung, Req 8/9) ---
+
+  it('feuert onPhaseEnd bei EXPIRE eines Fokus mit phaseType "Focus" (genau einmal)', () => {
+    const clock = makeClock(1_000_000);
+    const phaseEnds: PhaseType[] = [];
+    const { result } = renderHook(() => useTimer(), {
+      wrapper: makeWrapper({
+        now: clock.now,
+        tickIntervalMs: 250,
+        onPhaseEnd: (p) => phaseEnds.push(p),
+      }),
+    });
+    act(() => {
+      result.current.start();
+    });
+    act(() => {
+      clock.advance(25 * MIN + 500);
+      vi.advanceTimersByTime(250);
+    });
+    // Weitere Ticks dürfen keine Doppel-Meldung erzeugen.
+    act(() => {
+      vi.advanceTimersByTime(1000);
+    });
+    expect(phaseEnds).toEqual(['Focus']);
+  });
+
+  it('feuert onPhaseEnd auch bei EXPIRE einer Pause mit phaseType "ShortBreak"', () => {
+    const clock = makeClock(1_000_000);
+    const phaseEnds: PhaseType[] = [];
+    const { result } = renderHook(() => useTimer(), {
+      wrapper: makeWrapper({
+        now: clock.now,
+        tickIntervalMs: 250,
+        onPhaseEnd: (p) => phaseEnds.push(p),
+      }),
+    });
+    // Fokus abschließen → Pause (Ready).
+    act(() => {
+      result.current.start();
+    });
+    act(() => {
+      clock.advance(25 * MIN + 1);
+      vi.advanceTimersByTime(250);
+    });
+    expect(result.current.state.phaseType).toBe('ShortBreak');
+    // Pause starten und ablaufen lassen.
+    act(() => {
+      result.current.start();
+    });
+    act(() => {
+      clock.advance(5 * MIN + 1);
+      vi.advanceTimersByTime(250);
+    });
+    // Beide Phasenenden gemeldet (Focus zuerst, dann ShortBreak).
+    expect(phaseEnds).toEqual(['Focus', 'ShortBreak']);
+  });
+
+  it('feuert onPhaseEnd bei COMPLETE_EARLY eines Fokus mit phaseType "Focus"', () => {
+    const clock = makeClock(1_000_000);
+    const phaseEnds: PhaseType[] = [];
+    const { result } = renderHook(() => useTimer(), {
+      wrapper: makeWrapper({
+        now: clock.now,
+        tickIntervalMs: 250,
+        onPhaseEnd: (p) => phaseEnds.push(p),
+      }),
+    });
+    act(() => {
+      result.current.start();
+    });
+    act(() => {
+      result.current.completeEarly();
+    });
+    expect(phaseEnds).toEqual(['Focus']);
+  });
+
+  it('feuert onPhaseEnd BEVOR das Auto-Advance in die nächste Ready-Phase wechselt', () => {
+    const clock = makeClock(1_000_000);
+    // phaseType zum Zeitpunkt der Meldung festhalten: muss noch die ABGESCHLOSSENE
+    // Phase (Focus) sein, nicht bereits die nächste (ShortBreak).
+    const reported: PhaseType[] = [];
+    const { result } = renderHook(() => useTimer(), {
+      wrapper: makeWrapper({
+        now: clock.now,
+        tickIntervalMs: 250,
+        onPhaseEnd: (p) => reported.push(p),
+      }),
+    });
+    act(() => {
+      result.current.start();
+    });
+    act(() => {
+      clock.advance(25 * MIN + 1);
+      vi.advanceTimersByTime(250);
+    });
+    // Der State ist nach dem Auto-Advance bereits ShortBreak/Ready …
+    expect(result.current.state.phaseType).toBe('ShortBreak');
+    // … aber gemeldet wurde das Ende der Fokusphase.
+    expect(reported).toEqual(['Focus']);
+  });
+
+  it('feuert onPhaseEnd nicht bei cancel und nicht bei skip', () => {
+    const clock = makeClock(1_000_000);
+    const phaseEnds: PhaseType[] = [];
+    const { result } = renderHook(() => useTimer(), {
+      wrapper: makeWrapper({
+        now: clock.now,
+        tickIntervalMs: 250,
+        onPhaseEnd: (p) => phaseEnds.push(p),
+      }),
+    });
+    act(() => {
+      result.current.start();
+    });
+    act(() => {
+      result.current.cancel();
+    });
+    expect(phaseEnds).toHaveLength(0);
+    // Neue Phase über skip vorbereiten und überspringen → keine Meldung.
+    act(() => {
+      result.current.restart();
+    });
+    act(() => {
+      result.current.skip();
+    });
+    expect(phaseEnds).toHaveLength(0);
+  });
+
+  // --- onFirstStart-Seam (erste Nutzergeste, Req 8.1/8.2, 9.3) ---
+
+  it('feuert onFirstStart genau einmal beim ersten Start und nicht bei pause/resume', () => {
+    const clock = makeClock(1_000_000);
+    let firstStartCount = 0;
+    const { result } = renderHook(() => useTimer(), {
+      wrapper: makeWrapper({
+        now: clock.now,
+        tickIntervalMs: 250,
+        onFirstStart: () => {
+          firstStartCount += 1;
+        },
+      }),
+    });
+    act(() => {
+      result.current.start();
+    });
+    expect(firstStartCount).toBe(1);
+    // Pausieren und fortsetzen → onFirstStart darf NICHT erneut feuern.
+    act(() => {
+      result.current.pause();
+    });
+    act(() => {
+      result.current.resume();
+    });
+    expect(firstStartCount).toBe(1);
+  });
+
+  it('feuert onFirstStart nicht erneut beim Start einer späteren Phase', () => {
+    const clock = makeClock(1_000_000);
+    let firstStartCount = 0;
+    const { result } = renderHook(() => useTimer(), {
+      wrapper: makeWrapper({
+        now: clock.now,
+        tickIntervalMs: 250,
+        onFirstStart: () => {
+          firstStartCount += 1;
+        },
+      }),
+    });
+    // Fokus starten und ablaufen lassen → Pause (Ready).
+    act(() => {
+      result.current.start();
+    });
+    act(() => {
+      clock.advance(25 * MIN + 1);
+      vi.advanceTimersByTime(250);
+    });
+    expect(result.current.state.phaseType).toBe('ShortBreak');
+    // Zweites start() für die Pause → onFirstStart bleibt bei 1.
+    act(() => {
+      result.current.start();
+    });
+    expect(firstStartCount).toBe(1);
+  });
+
+  it('feuert onFirstStart nicht, wenn start() im Nicht-Ready-Zustand no-op ist', () => {
+    const clock = makeClock(1_000_000);
+    let firstStartCount = 0;
+    const { result } = renderHook(() => useTimer(), {
+      wrapper: makeWrapper({
+        now: clock.now,
+        tickIntervalMs: 250,
+        onFirstStart: () => {
+          firstStartCount += 1;
+        },
+      }),
+    });
+    act(() => {
+      result.current.start();
+    });
+    expect(firstStartCount).toBe(1);
+    // Erneutes start() während Running ist ein no-op → kein weiteres Feuern.
+    act(() => {
+      result.current.start();
+    });
+    expect(firstStartCount).toBe(1);
   });
 
   it('wirft, wenn useTimer außerhalb des Providers verwendet wird', () => {
